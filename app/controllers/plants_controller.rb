@@ -29,9 +29,24 @@ class PlantsController < ApplicationController
     end
   end
 
+  # DESTROY /plants/:id
+  def destroy
+    plant = find_plant
+    if plant
+      plant.destroy
+      head :no_content
+    else
+      render json: { error: 'Plant not found' }, status: :not_found
+    end
+  end
+
   private
 
   def plant_params
     params.permit(:name, :image, :price, :is_in_stock)
+  end
+
+  def find_plant
+    Plant.find(params[:id])
   end
 end
